@@ -23,10 +23,10 @@ export const AuthProvider = ({ children }) => {
   function logout() {
     localStorage.removeItem("movieapp.user");
     setUser({});
+    window.location.href = "/";
   }
 
   function isAuth() {
-    console.log(user);
     return user.name ? true : false;
   }
 

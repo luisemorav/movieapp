@@ -22,8 +22,6 @@ const Login = () => {
     login(data.get("user"), data.get("pass"));
   };
 
-  console.log(isAuth());
-
   if (isAuth()) {
     return <Navigate to="/search" />;
   }
