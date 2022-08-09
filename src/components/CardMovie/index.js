@@ -1,6 +1,11 @@
 import { useContext, useState, useEffect } from "react";
-import { MovieFavoriteContext } from "../../context";
 import {
+  MovieFavoriteContext,
+  ShoppingCartContext,
+  AuthContext,
+} from "../../context";
+import {
+  Button,
   Card,
   CardContent,
   CardMedia,
@@ -8,14 +13,19 @@ import {
   Typography,
   Chip,
   Rating,
+  Stack,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const CardMovie = ({ movie }) => {
+  const { user } = useContext(AuthContext);
+
   const { addToFavorite, isIncludeInFavorites, removeFavorite } =
     useContext(MovieFavoriteContext);
+
+  const { saveInCart } = useContext(ShoppingCartContext);
 
   // sirve para saber si debemos pintar el corazon
   const [value, setValue] = useState(0);
@@ -38,6 +48,10 @@ const CardMovie = ({ movie }) => {
     setValue(newValue);
   };
 
+  const addToCart = () => {
+    saveInCart(movie, user.id);
+  };
+
   useEffect(() => {
     const pintado = isIncludeInFavorites(movie.imdbID);
     setValue(pintado);
@@ -47,7 +61,7 @@ const CardMovie = ({ movie }) => {
     <Grid item xs={12} md={4} my={3}>
       <Card
         sx={{
-          height: 430,
+          height: 450,
         }}
       >
         <CardMedia
@@ -70,6 +84,9 @@ const CardMovie = ({ movie }) => {
                 {movie.Title}
               </Typography>
               <Typography variant="body1">{movie.Year}</Typography>
+              <Typography color="#f01" variant="h6">
+                $ {movie.Price}
+              </Typography>
               <Chip
                 label={movie.Type}
                 color="success"
@@ -78,16 +95,21 @@ const CardMovie = ({ movie }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              {/* El corazon se pinta si es que value = 1 */}
-              <StyledRating
-                max={1}
-                value={value}
-                icon={<FavoriteIcon fontSize="inherit" />}
-                emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-                onChange={(event, newValue) =>
-                  handleChangeFavorite(event, newValue)
-                }
-              />
+              <Stack direction="row" justifyContent="space-between">
+                <Button variant="contained" size="small" onClick={addToCart}>
+                  Add to cart
+                </Button>
+                {/* El corazon se pinta si es que value = 1 */}
+                <StyledRating
+                  max={1}
+                  value={value}
+                  icon={<FavoriteIcon fontSize="inherit" />}
+                  emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+                  onChange={(event, newValue) =>
+                    handleChangeFavorite(event, newValue)
+                  }
+                />
+              </Stack>
             </Grid>
           </Grid>
         </CardContent>
