@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import Config from "../config";
 
 export const AuthContext = createContext();
 
@@ -7,14 +8,15 @@ export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(userStorage);
 
-  function login(user, pass) {
-    if (user === "admin" && pass === "1234") {
-      const authUser = {
-        user: user,
-        name: "Bruno Diaz",
-      };
-      localStorage.setItem("movieapp.user", JSON.stringify(authUser));
+  function login(username, pass) {
+    const authUser = Config.authUsers.find(
+			user => user.username === username
+     && user.pass === pass
+    );
+
+    if (authUser !== undefined) {
       setUser(authUser);
+      localStorage.setItem("movieapp.user", JSON.stringify(authUser));
       return true;
     }
     return false;

@@ -1,8 +1,8 @@
-import config from "./config.js";
+import Config from "../config";
 
 const searchByText = async (searchText) => {
   try {
-    const url = config.apiUrl + "?s=" + searchText + "&apikey=" + config.apiKey;
+    const url = Config.api.url + "?s=" + searchText + "&apikey=" + Config.api.key;
     const response = await fetch(url);
     const data = await response.json();
     return data;
