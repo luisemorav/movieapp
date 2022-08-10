@@ -1,6 +1,8 @@
+const OMDB_API_KEY = process.env.REACT_APP_OMDB_API_KEY || "";
+
 export const api = {
     url: "https://www.omdbapi.com",
-    key: "8baf1935", // la que tienen cada uno
+    key: OMDB_API_KEY, // la que tienen cada uno
   };
   
   export const authUsers = [
